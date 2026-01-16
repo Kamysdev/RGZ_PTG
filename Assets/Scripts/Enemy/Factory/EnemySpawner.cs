@@ -11,8 +11,6 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaveSpawner());
-        Debug.Log("123");
-        Debug.Log("12345");
     }
 
     public void spawnEnemy()
@@ -36,6 +34,7 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             spawnEnemy();
+            Debug.Log("12345");
 
             yield return new WaitForSeconds(5f);
         }
