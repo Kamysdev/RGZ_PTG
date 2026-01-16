@@ -56,7 +56,7 @@ public abstract class AbstractEnemy : MonoBehaviour, IEnemy
     public virtual void moveTo(Vector3 point)
     {
         agent.SetDestination(point);
-        animator.SetFloat("speed", agent.velocity.magnitude);
+        animator.SetFloat("Speed", agent.velocity.magnitude);
     }
 
     public virtual void rotateTo(Vector3 point)
@@ -67,13 +67,13 @@ public abstract class AbstractEnemy : MonoBehaviour, IEnemy
 
     public virtual void attack(bool state)
     {
-        animator.SetBool("attack", state);
+        animator.SetBool("Attack", state);
     }
 
     public virtual void stunBegin()
     {
         stunned = true;
-        animator.SetTrigger("getHit");
+        animator.SetTrigger("GetHit");
     }
     
     public virtual void stunEnd()
@@ -94,16 +94,18 @@ public abstract class AbstractEnemy : MonoBehaviour, IEnemy
 
     public virtual void death()
     {
-        dead = true;
-        animator.SetTrigger("death");
-        stop(true);
-
-        StartCoroutine(despawn());
+        if (dead == false)
+        {
+            dead = true;
+            animator.SetBool("Death", true);
+            stop(true);
+            StartCoroutine(despawn());
+        }
     }
 
     IEnumerator despawn()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2.5f);
 
         Destroy(gameObject);
     }
@@ -112,6 +114,4 @@ public abstract class AbstractEnemy : MonoBehaviour, IEnemy
     {
         transform.position = position;
     }
-
-    
 }

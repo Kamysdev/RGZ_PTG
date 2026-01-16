@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -6,6 +7,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] List<EnemyFactory> enemyFactories = new List<EnemyFactory>();
     [SerializeField] Transform player;
     EnemyFactory enemyFactory;
+
+    void Start()
+    {
+        StartCoroutine(WaveSpawner());
+        Debug.Log("123");
+        Debug.Log("12345");
+    }
 
     public void spawnEnemy()
     {
@@ -23,9 +31,13 @@ public class EnemySpawner : MonoBehaviour
         enemyHP.spawnOnDeath.AddListener(pos => GetComponent<ItemSpawner>().spawnRandomItems(pos));
     }
 
-    private void Update()
+    private IEnumerator WaveSpawner()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        while (true)
+        {
             spawnEnemy();
+
+            yield return new WaitForSeconds(5f);
+        }
     }
 }

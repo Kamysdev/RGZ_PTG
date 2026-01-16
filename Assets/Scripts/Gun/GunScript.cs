@@ -5,6 +5,7 @@ public class GunScript : MonoBehaviour
     [SerializeField] private GunShootingScript shootScript;
     [SerializeField] private GunLogic gunLogic;
     [SerializeField] private ReloadingScript reloadingScript;
+    [SerializeField] private GunUIScript gunUIScript;
 
     [SerializeField][Range(1, 50)] private int maxAmmo;
     private int currentAmmo;
@@ -14,6 +15,7 @@ public class GunScript : MonoBehaviour
     private void Start()
     {
         currentAmmo = maxAmmo;
+        gunUIScript.UpdateAmmoCount(currentAmmo, maxAmmo);
     }
 
     public void Shoot()
@@ -34,6 +36,7 @@ public class GunScript : MonoBehaviour
     {
         reloading = false;
         currentAmmo = maxAmmo;
+        gunUIScript.UpdateAmmoCount(currentAmmo, maxAmmo);
     }
     
     public void GunShot()
@@ -41,5 +44,6 @@ public class GunScript : MonoBehaviour
         Debug.Log("Shoot in GunScript");
         gunLogic.Shoot();
         currentAmmo--;
+        gunUIScript.UpdateAmmoCount(currentAmmo, maxAmmo);
     }
 }

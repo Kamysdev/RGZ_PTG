@@ -9,6 +9,7 @@ public class MeleeEnemy : AbstractEnemy
 
     RunTo runState;
     Attack attackState;
+    Stunned stunnedState;
     RotateTo rotateState;
 
     private void Start()
@@ -16,6 +17,7 @@ public class MeleeEnemy : AbstractEnemy
         base.Start();
         runState = new RunTo(this);
         attackState = new Attack(this);
+        stunnedState = new Stunned(this);
         rotateState = new RotateTo(this);
 
         stateMachine.startingState(runState);
@@ -24,11 +26,15 @@ public class MeleeEnemy : AbstractEnemy
     public override void updateState()
     {
         if (dead == true) return;
+
+        if (stunned == true)
+        {
+            stateMachine?.setState(stunnedState);
+        }
         else
         {
             if (Vector3.Angle(transform.forward, player.position - transform.position) > 20)
             {
-                Debug.Log(Vector3.Angle(transform.forward, player.position - transform.position));
                 stateMachine?.setState(rotateState);
             }
             else
@@ -43,7 +49,6 @@ public class MeleeEnemy : AbstractEnemy
             }
             else
             {
-                Debug.Log("Attack");
                 stateMachine?.setState(attackState);
             }
         }
@@ -56,8 +61,12 @@ public class MeleeEnemy : AbstractEnemy
         if (Vector3.Distance(transform.position, player.position) <= attackRange)
         {
             Health playerHP = player.GetComponent<Health>();
+            Debug.Log(playerHP);
+            
             if (playerHP != null)
+            {
                 playerHP.hpDecrease(damage);
+            }
         }
     }
 }
